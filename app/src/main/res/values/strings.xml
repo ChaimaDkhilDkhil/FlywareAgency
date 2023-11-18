@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">DashBoard</string>
+
+    <string name="log_in">Login</string>
+
+    <string name="sign_up">Sign Up</string>
+
+    <string name="France"></string>
+
+    <string name="Canada"></string>
+
+    <string name="Sweden"></string>
+
+    <string name="Belgium"></string>
+
+    <string name="America"></string>
+
+    <string name="Suisse"></string>
+
+    <string name="Italie"></string>
+
+    <string name="Mexico"></string>
+
+    <string name="Tunisia"></string>
+
+    <string name="Germany"></string>
+
+
+</resources>
