@@ -1,38 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
-    app:cardUseCompatPadding="true"
-    android:layout_marginHorizontal="8dp"
-    app:cardElevation="12dp">
+    android:layout_height="match_parent"
+    tools:context=".bookingUpdate">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="356dp"
         android:layout_height="128dp"
-        android:padding="8dp">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/logoIv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/img" />
-        </androidx.cardview.widget.CardView>
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.709"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.026">
 
         <TextView
-            android:id="@+id/destinationTv"
+            android:id="@+id/destinationUp"
             android:layout_width="76dp"
             android:layout_height="24dp"
             android:text="destination"
@@ -41,13 +28,13 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.257"
+            app:layout_constraintHorizontal_bias="0.15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.076" />
+            app:layout_constraintVertical_bias="0.153" />
 
         <TextView
-            android:id="@+id/dateTv"
+            android:id="@+id/dateUp"
             android:layout_width="98dp"
             android:layout_height="23dp"
             android:text="depdate"
@@ -55,12 +42,13 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.271"
+            app:layout_constraintHorizontal_bias="0.139"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.504" />
 
         <TextView
-            android:id="@+id/durationTv"
+            android:id="@+id/durationUp"
             android:layout_width="76dp"
             android:layout_height="24dp"
             android:text="duration"
@@ -73,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/returnDateTv"
+            android:id="@+id/returnDateUp"
             android:layout_width="94dp"
             android:layout_height="27dp"
             android:text="retdate"
@@ -81,13 +69,13 @@
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.267"
+            app:layout_constraintHorizontal_bias="0.137"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintVertical_bias="0.99" />
 
         <TextView
-            android:id="@+id/departureTv"
+            android:id="@+id/departureUp"
             android:layout_width="76dp"
             android:layout_height="24dp"
             android:text="departure"
@@ -101,7 +89,7 @@
             app:layout_constraintVertical_bias="0.923" />
 
         <TextView
-            android:id="@+id/priceTv"
+            android:id="@+id/priceUp"
             android:layout_width="76dp"
             android:layout_height="24dp"
             android:text="Price"
@@ -110,27 +98,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.628"
+            app:layout_constraintHorizontal_bias="0.65"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.067" />
-
-        <Button
-            android:id="@+id/btnBooking"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="80dp"
-            android:layout_height="52dp"
-            android:text="Book here"
-            android:textColor="#6E7A72"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.989"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-        </Button>
+            app:layout_constraintVertical_bias="0.153" />
 
         <!--        <Button-->
         <!--            android:style="@style/Widget.Material3.Button.OutlinedButton"-->
@@ -147,4 +118,55 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
+    <Spinner
+        android:id="@+id/classSpinnerUp"
+        android:layout_width="203dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="320dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nbAdultUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:ems="10"
+        android:text="0"
+        android:hint="adult number"
+        android:inputType="number"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nbChildrenUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:ems="10"
+        android:hint="children number"
+        android:inputType="number"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/updatebtn"
+        android:layout_width="108dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="412dp"
+        android:text="Book"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.442"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
