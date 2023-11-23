@@ -116,7 +116,7 @@ class FlightActivity : AppCompatActivity() {
 
                 adapter.setFilteredList(filteredList)
                 Log.d("FilteredList", filteredList.size.toString())
-                adapter.notifyDataSetChanged()
+
 
             }
         }

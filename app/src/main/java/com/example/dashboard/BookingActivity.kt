@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -47,7 +48,12 @@ class BookingActivity : AppCompatActivity() {
         departure = intent.getStringExtra("departure").toString()
         price = intent.getDoubleExtra("price",0.0)
         requestQueue = Volley.newRequestQueue(this)
-
+        findViewById<TextView>(R.id.destinationAdd).setText(destination)
+        findViewById<TextView>(R.id.dateAdd).setText  (date)
+        findViewById<TextView>(R.id.durationAdd).setText (duration)
+        findViewById<TextView>(R.id.returnDateAdd).setText  (returnDate)
+        findViewById<TextView>(R.id.departureAdd).setText (departure)
+        findViewById<TextView>(R.id.priceAdd).setText (price.toString())
         nbChildren=findViewById(R.id.nbChildren)
         nbAdulte=findViewById(R.id.nbAdult)
         btnbook=findViewById(R.id.addbtn)

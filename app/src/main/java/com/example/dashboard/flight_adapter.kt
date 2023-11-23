@@ -24,6 +24,7 @@ class flight_adapter(var mList: ArrayList<flight_items_view_model>) : RecyclerVi
 
     fun setFilteredList(mList: ArrayList<flight_items_view_model>) {
         this.mList = mList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
