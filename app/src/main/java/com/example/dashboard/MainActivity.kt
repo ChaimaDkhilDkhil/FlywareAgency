@@ -6,43 +6,47 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.ArrayList
 
 open class MainActivity : AppCompatActivity() {
-    private var adapter: RecyclerView.Adapter<*>? = null
-    private var recyclerViewList: RecyclerView? = null
+
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        recyclerViewList = findViewById(R.id.view)
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewList?.layoutManager = linearLayoutManager
 
-        val news = ArrayList<ListDomain>()
-        news.add(ListDomain("Browsing trips in Belgium", "pic1"))
-        news.add(ListDomain("book a flight to tunisia   ", "tunisia3"))
-        news.add(ListDomain("corea booking offer ", "corea3"))
-        news.add(ListDomain("Stays in Roma", "roma2"))
-        adapter = NewsAdapter(news)
-        recyclerViewList?.adapter = adapter
 
-        val flightButton=findViewById<Button>(R.id.flightButton)
-        flightButton.setOnClickListener{
-            val Intent = Intent(this,FlightActivity::class.java)
-            startActivity(Intent)
+        bottomNavigationView = findViewById(R.id.bottomnavigation)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_book -> {
+                    replaceFragment(BookFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.menu_home -> {
+                    replaceFragment(HomeFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> false
+            }
         }
 
-        val StaysButton=findViewById<Button>(R.id.StaysButton)
-        StaysButton.setOnClickListener{
-            val Intent = Intent(this,staysActivity::class.java)
-            startActivity(Intent)
-        }
-
-
+        replaceFragment(HomeFragment())
     }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame, fragment)
+            .commit()
+    }
+
+
 }
