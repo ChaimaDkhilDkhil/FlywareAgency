@@ -4,25 +4,21 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: RequestQueue?) : RecyclerView.Adapter<bookingFlightAdapter.bookingViewHolder>() {
 
     inner class bookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val duration: TextView = itemView.findViewById(R.id.duration)
-        val date: TextView = itemView.findViewById(R.id.date)
+        val duration: TextView = itemView.findViewById(R.id.hotelLocationList)
+        val date: TextView = itemView.findViewById(R.id.hotelCountryList)
         val returndate: TextView = itemView.findViewById(R.id.returndate)
-        val destination: TextView = itemView.findViewById(R.id.destination)
+        val destination: TextView = itemView.findViewById(R.id.hotelNameList)
         val departure: TextView = itemView.findViewById(R.id.departure)
-        val price: TextView = itemView.findViewById(R.id.price)
+        val price: TextView = itemView.findViewById(R.id.hotePriceList)
         val update: FloatingActionButton = itemView.findViewById(R.id.update)
         val delete: FloatingActionButton = itemView.findViewById(R.id.delete)
     }
