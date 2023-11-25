@@ -17,20 +17,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.079">
+
         <TextView
             android:id="@+id/destinationAdd"
-            android:layout_width="76dp"
-            android:layout_height="24dp"
-            android:text="destinationAdd"
+            android:layout_width="95dp"
+            android:layout_height="26dp"
+            android:text="destination"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintHorizontal_bias="0.13"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.153" />
+            app:layout_constraintVertical_bias="0.156" />
 
         <TextView
             android:id="@+id/dateAdd"

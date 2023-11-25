@@ -1,11 +1,11 @@
 package com.example.dashboard
+
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -17,21 +17,21 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.Locale
 
-
-class staysActivity : AppCompatActivity() {
+class StaysListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var dataList: ArrayList<Hotels>
     private var mList = ArrayList<Hotels>()
     private lateinit var manager: RecyclerView.LayoutManager
-    private lateinit var myAdapter: AdapterClass
+    private lateinit var myAdapter: StaysAdapter
     private lateinit var searchView: SearchView
     private lateinit var searchList: ArrayList<Hotels>
+    private lateinit var pays :String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.stays_main)
-
-        recyclerView = findViewById(R.id.recyclerView)
-        searchView = findViewById(R.id.search)
+        setContentView(R.layout.activity_stays_list)
+        pays= intent.getStringExtra("countryName")!!
+        recyclerView = findViewById(R.id.hotelRecyclerView)
+        searchView = findViewById(R.id.hotelSearch)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         dataList = arrayListOf()
@@ -62,10 +62,10 @@ class staysActivity : AppCompatActivity() {
                 return false
             }
         })
-        myAdapter = AdapterClass(searchList)
+        myAdapter = StaysAdapter(searchList)
         recyclerView.adapter = myAdapter
         myAdapter.onItemClick = {
-            val intent = Intent(this, StaysListActivity::class.java)
+            val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra("countryName", it.pays)
             this.startActivity(intent)
         }
@@ -74,7 +74,7 @@ class staysActivity : AppCompatActivity() {
     private fun getRequest() {
         GlobalScope.launch(Dispatchers.IO) {
             val response = try {
-                RetrofitInstance.api.getCountries()
+                RetrofitInstance.api.getHotels(pays)
             }catch (e: HttpException){
                 Toast.makeText(applicationContext,"http error ${e.message}", Toast.LENGTH_LONG).show()
                 return@launch
@@ -86,27 +86,28 @@ class staysActivity : AppCompatActivity() {
             if (response.isSuccessful && response.body() != null){
                 withContext(Dispatchers.Main){
 
-                val hotels = response.body()
-                if (hotels != null) {
-                    for(hotel in hotels) {
-                        val drawableName = hotel.toLowerCase(Locale.ROOT)
-                        val drawableId = resources.getIdentifier(drawableName, "drawable", packageName)
-                        val hotelItem = Hotels(
-                            hotel,
-                            drawableId
-                        )
-                        mList.add(hotelItem)
-                        myAdapter.notifyDataSetChanged()
+                    val hotels = response.body()
+                    if (hotels != null) {
+                        for(hotel in hotels) {
+                            val drawableName = hotel.hotel.name.toLowerCase(Locale.ROOT)
+                            val drawableId = resources.getIdentifier(drawableName, "drawable", packageName)
+                            val hotelItem = Hotels(
+                                hotel.pays,
+                                hotel.hotel,
+                                drawableId
+                            )
+                            mList.add(hotelItem)
+                            myAdapter.notifyDataSetChanged()
 
+                        }
                     }
+
+                    manager = LinearLayoutManager(this@StaysListActivity)
+                    myAdapter = StaysAdapter(mList)
+
+                    recyclerView.layoutManager = manager
+                    recyclerView.adapter = myAdapter
                 }
-
-                manager = LinearLayoutManager(this@staysActivity)
-                myAdapter = AdapterClass(mList)
-
-                recyclerView.layoutManager = manager
-                recyclerView.adapter = myAdapter
-            }
-        }}
+            }}
     }
 }

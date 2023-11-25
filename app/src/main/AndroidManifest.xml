@@ -13,14 +13,18 @@
         android:theme="@style/Theme.Project44"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BookingHotelUpdate"
+            android:exported="false" />
+        <activity
+            android:name=".StaysListActivity"
+            android:exported="false" />
+        <activity
             android:name=".bookingUpdate"
             android:exported="false" />
         <activity
             android:name=".BookingActivity"
             android:exported="false" />
-        <activity
-            android:name=".FlightActivity"
-            />
+        <activity android:name=".FlightActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

@@ -134,11 +134,11 @@
 
                         <ImageView
                             android:id="@+id/imageView24"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_width="197dp"
+                            android:layout_height="46dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="8dp"
-                            app:srcCompat="@drawable/ic_4" />
+                            app:srcCompat="@mipmap/contact_foreground" />
 
                         <Button
                             android:id="@+id/contactsButton"

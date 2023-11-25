@@ -20,7 +20,6 @@ class bookingUpdate : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("YourTag", "FlightActivity onCreate")
         setContentView(R.layout.activity_booking_update)
         val classSpinner: Spinner = findViewById(R.id.classSpinnerUp)
 
