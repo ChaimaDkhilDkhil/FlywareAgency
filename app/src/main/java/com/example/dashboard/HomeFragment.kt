@@ -48,6 +48,11 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), staysActivity::class.java)
             startActivity(intent)
         }
+        val transportsButton = view.findViewById<Button>(R.id.transportButton)
+        transportsButton.setOnClickListener {
+            val intent = Intent(requireContext(), transportsActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

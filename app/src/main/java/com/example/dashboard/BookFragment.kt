@@ -24,8 +24,9 @@ class BookFragment : Fragment() {
                     replaceFragment(FlightBookingFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.menu_hotel_booking -> {
-                    replaceFragment(hotelBookingFragment())
+
+                R.id.menu_transport_booking -> {
+                    replaceFragment(transportBookingFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false

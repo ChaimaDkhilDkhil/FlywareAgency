@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Project44"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".TransportsListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".transportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Detail_transportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BookingTransportUpdate"
+            android:exported="false" />
+        <activity
             android:name=".BookingHotelUpdate"
             android:exported="false" />
         <activity

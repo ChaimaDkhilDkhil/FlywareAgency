@@ -230,7 +230,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="39dp"
                             android:layout_marginTop="8dp"
-                            app:srcCompat="@drawable/transport" />
+                            app:srcCompat="@drawable/transport1" />
 
                         <Button
                             android:id="@+id/transportButton"
