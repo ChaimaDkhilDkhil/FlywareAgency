@@ -1,7 +1,8 @@
 package com.example.dashboard
-import android.app.DatePickerDialog
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.app.DatePickerDialog
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -22,8 +23,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.Calendar
 
-class BookingTransportUpdate : AppCompatActivity(){
-
+class BookingTransportUpdate : AppCompatActivity() {
 
     lateinit var id :String
     lateinit var name :String
@@ -31,7 +31,6 @@ class BookingTransportUpdate : AppCompatActivity(){
     lateinit var location :String
     lateinit var price :String
     lateinit var description :String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_transport_update)

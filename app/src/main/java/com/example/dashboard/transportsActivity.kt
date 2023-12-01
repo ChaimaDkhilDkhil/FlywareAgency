@@ -1,12 +1,12 @@
 package com.example.dashboard
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -27,11 +27,9 @@ class transportsActivity : AppCompatActivity() {
     private lateinit var myAdapter: AdapterClassTransport
     private lateinit var searchView: SearchView
     private lateinit var searchList: ArrayList<Transports>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.transports_main)
-
+        setContentView(R.layout.activity_transports)
         recyclerView = findViewById(R.id.recyclerView)
         searchView = findViewById(R.id.search)
         recyclerView.layoutManager = LinearLayoutManager(this)

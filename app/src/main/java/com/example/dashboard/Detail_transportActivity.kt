@@ -1,9 +1,9 @@
 package com.example.dashboard
 
-import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -31,7 +31,6 @@ class Detail_transportActivity : AppCompatActivity() {
     private lateinit var price: TextView
     private lateinit var location: TextView
     private lateinit var pays: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_transport)

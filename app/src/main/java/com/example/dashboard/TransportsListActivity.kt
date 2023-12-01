@@ -1,8 +1,9 @@
 package com.example.dashboard
-import android.annotation.SuppressLint
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.Locale
+
 class TransportsListActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -27,7 +29,8 @@ class TransportsListActivity : AppCompatActivity() {
     private lateinit var pays :String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_transport_list)
+        setContentView(R.layout.activity_transports_list)
+
         pays= intent.getStringExtra("countryName")!!
         recyclerView = findViewById(R.id.transportRecyclerView)
         searchView = findViewById(R.id.transportSearch)
