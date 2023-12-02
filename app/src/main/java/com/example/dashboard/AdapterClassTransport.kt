@@ -1,6 +1,7 @@
 package com.example.dashboard
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class AdapterClassTransport (private val dataList: ArrayList<Transports>) : Recy
             if (position != RecyclerView.NO_POSITION) {
                 val selectedCountry = dataList[position]
                 val intent = Intent(v?.context, TransportsListActivity::class.java)
+
                 intent.putExtra("countryName", selectedCountry.pays)
                 v?.context?.startActivity(intent)
             }

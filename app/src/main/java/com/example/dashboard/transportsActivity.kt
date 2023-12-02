@@ -68,7 +68,7 @@ class transportsActivity : AppCompatActivity() {
         recyclerView.adapter = myAdapter
         myAdapter.onItemClick = {
             val intent = Intent(this, TransportsListActivity::class.java)
-            intent.putExtra("countryName", it.pays)
+            intent.putExtra("country", it.pays)
             this.startActivity(intent)
         }
     }
@@ -95,7 +95,7 @@ class transportsActivity : AppCompatActivity() {
                             val drawableId = resources.getIdentifier(drawableName, "drawable", packageName)
                             val transportItem = Transports(
                                 transport, // pays
-                                Transport("", "", "", "", 0, "", 0), // transport (you might need to adjust this based on your Transport class)
+                                Transport("", "", "", ""), // transport (you might need to adjust this based on your Transport class)
                                 drawableId // img
                             )
                             mList.add(transportItem)
