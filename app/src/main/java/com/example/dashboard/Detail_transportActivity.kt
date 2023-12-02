@@ -61,7 +61,7 @@ class Detail_transportActivity : AppCompatActivity() {
         detailDesc.text = intent.getStringExtra("description")
         price.text = intent.getStringExtra("price")
         location.text = intent.getStringExtra("location")
-        pays = intent.getStringExtra("pays").toString()
+        pays= intent.getStringExtra("country").toString()
         detailImage.setImageResource(intent.getIntExtra("image", 0))
 
         btnbook.setOnClickListener {

@@ -31,6 +31,7 @@ class BookingTransportUpdate : AppCompatActivity() {
     lateinit var location: String
     lateinit var price: String
     lateinit var description: String
+    lateinit var title: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_transport_update)
@@ -41,6 +42,7 @@ class BookingTransportUpdate : AppCompatActivity() {
         location = intent.getStringExtra("location").toString()
         price = intent.getStringExtra("price").toString()
         description = intent.getStringExtra("description").toString()
+        title = intent.getStringExtra("title").toString()
 
         val nbPersonne = intent.getIntExtra("nbpersonne", 0)
         val datevar = intent.getStringExtra("date")
@@ -51,6 +53,7 @@ class BookingTransportUpdate : AppCompatActivity() {
         findViewById<TextView>(R.id.transportPriceUp).setText(price)
         findViewById<TextView>(R.id.nbpersonneUp).setText(nbPersonne.toString())
         findViewById<TextView>(R.id.dateUp).setText(datevar)
+        findViewById<TextView>(R.id.titleUp).setText(title)
         findViewById<TextView>(R.id.transportluggageUp).setText(luggage.toString())
 
         val date = findViewById<EditText>(R.id.dateUp)
@@ -86,14 +89,15 @@ class BookingTransportUpdate : AppCompatActivity() {
     private fun putRequest() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val nbpersonne = findViewById<EditText>(R.id.nbpersonneUp).text.toString()
+                val nbpersonne = findViewById<EditText>(R.id.nbpersonneUp).text.toString().toInt()
                 val date = findViewById<EditText>(R.id.dateUp).text.toString()
-                val luggage = findViewById<EditText>(R.id.transportluggageUp).text.toString()
+                val luggage = findViewById<EditText>(R.id.transportluggageUp).text.toString().toInt()
 
                 val updatedTransportBooking = TransportBooking(
                     id,
-                    pays,
                     name,
+                    pays,
+                    title,
                     location,
                     price,
                     description,
