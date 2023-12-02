@@ -76,16 +76,16 @@ class Detail_transportActivity : AppCompatActivity() {
             val response = try {
                 RetrofitInstance.apit.createBooking(
                     TransportBooking(
-                        id = null,
-                        pays = pays,
-                        name = detailTitle.text.toString(),
-                        title = detailTitle.text.toString(),
-                        location = location.text.toString(),
-                        price = price.text.toString(),
-                        description = detailDesc.text.toString(),
-                        nbPersonne = nbpersonne.text.toString().toInt(), // Assuming nbPersonne is an Int
-                        date = date.text.toString(), // Assuming date is a String
-                        luggage = luggage.text.toString().toInt() // Assuming luggage is an Int
+                        null,
+                        pays,
+                        detailTitle.text.toString(),
+                        detailTitle.text.toString(),
+                        location.text.toString(),
+                        price.text.toString(),
+                         detailDesc.text.toString(),
+                        nbpersonne.text.toString().toIntOrNull() ?: 0, // Assuming nbPersonne is an Int
+                        date.text.toString(), // Assuming date is a String
+                        luggage.text.toString().toIntOrNull() ?: 0 // Assuming luggage is an Int
                     )
                 )
             } catch (e: HttpException) {

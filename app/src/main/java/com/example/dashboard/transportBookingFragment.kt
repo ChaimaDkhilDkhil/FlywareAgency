@@ -49,7 +49,7 @@ class transportBookingFragment : Fragment() {
                             if (transportBookings != null) {
                                 for (transportBooking in transportBookings) {
                                     val transportItem = TransportBooking(
-                                        transportBooking.id,
+                                        transportBooking._id,
                                         transportBooking.name ?: "",
                                         transportBooking.pays ?: "",
                                         transportBooking.title ?: "",

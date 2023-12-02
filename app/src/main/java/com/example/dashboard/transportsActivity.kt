@@ -95,7 +95,7 @@ class transportsActivity : AppCompatActivity() {
                             val drawableId = resources.getIdentifier(drawableName, "drawable", packageName)
                             val transportItem = Transports(
                                 transport, // pays
-                                Transport("", "", "", "", 0, "", 0), // transport (you might need to adjust this based on your Transport class)
+                                Transport("", "", "", ""), // transport (you might need to adjust this based on your Transport class)
                                 drawableId // img
                             )
                             mList.add(transportItem)

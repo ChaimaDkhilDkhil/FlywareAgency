@@ -25,12 +25,12 @@ import java.util.Calendar
 
 class BookingTransportUpdate : AppCompatActivity() {
 
-    lateinit var id :String
-    lateinit var name :String
-    lateinit var pays :String
-    lateinit var location :String
-    lateinit var price :String
-    lateinit var description :String
+    lateinit var id: String
+    lateinit var name: String
+    lateinit var pays: String
+    lateinit var location: String
+    lateinit var price: String
+    lateinit var description: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_transport_update)
@@ -42,18 +42,18 @@ class BookingTransportUpdate : AppCompatActivity() {
         price = intent.getStringExtra("price").toString()
         description = intent.getStringExtra("description").toString()
 
-        val nbpersonne = intent.getIntExtra("nbpersonne", 0)
+        val nbPersonne = intent.getIntExtra("nbpersonne", 0)
         val datevar = intent.getStringExtra("date")
-        val luggage  = intent.getIntExtra("luggage", 0)
+        val luggage = intent.getIntExtra("luggage", 0)
 
         findViewById<TextView>(R.id.transportNameUp).setText(name)
         findViewById<TextView>(R.id.transportLocationUp).setText(location)
-        findViewById<TextView>(R.id.transportPriceUp).setText (price)
-        findViewById<TextView>(R.id.nbpersonneUp).setText  (nbpersonne.toString())
-        findViewById<TextView>(R.id.dateUp).setText (datevar)
-        findViewById<TextView>(R.id.transportluggageUp).setText (luggage.toString())
+        findViewById<TextView>(R.id.transportPriceUp).setText(price)
+        findViewById<TextView>(R.id.nbpersonneUp).setText(nbPersonne.toString())
+        findViewById<TextView>(R.id.dateUp).setText(datevar)
+        findViewById<TextView>(R.id.transportluggageUp).setText(luggage.toString())
 
-        val date= findViewById<EditText>(R.id.dateUp)
+        val date = findViewById<EditText>(R.id.dateUp)
         date.setText(datevar.toString())
         date.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -61,53 +61,98 @@ class BookingTransportUpdate : AppCompatActivity() {
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
-                runOnUiThread {
-                    date.setText("$selectedDay/${selectedMonth + 1}/$selectedYear")
-                }
-            }, year, month, day)
+            val datePickerDialog = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+                    runOnUiThread {
+                        date.setText("$selectedDay/${selectedMonth + 1}/$selectedYear")
+                    }
+                },
+                year,
+                month,
+                day
+            )
             datePickerDialog.show()
 
         }
-        val button=findViewById<Button>(R.id.transportbtnUp)
+        val button = findViewById<Button>(R.id.transportbtnUp)
         button.setOnClickListener {
             putRequest()
 
         }
     }
+
     @OptIn(DelicateCoroutinesApi::class)
-    private fun putRequest(){
+    private fun putRequest() {
         GlobalScope.launch(Dispatchers.IO) {
-            val nbpersonne = findViewById<EditText>(R.id.nbpersonneUp).text.toString().toInt()
-            val date = findViewById<EditText>(R.id.dateUp).text.toString()
-            val luggage  = findViewById<EditText>(R.id.transportluggageUp).text.toString().toInt()
+            try {
+                val nbpersonne = findViewById<EditText>(R.id.nbpersonneUp).text.toString()
+                val date = findViewById<EditText>(R.id.dateUp).text.toString()
+                val luggage = findViewById<EditText>(R.id.transportluggageUp).text.toString()
 
-            val updatedHotelBooking = HotelBooking(
-                id,
-                pays,
-                name,
-                location,
-                price,
-                description,
-                nbpersonne,
-                date,
-                luggage
-            )
-            val response = try {
+                val updatedTransportBooking = TransportBooking(
+                    id,
+                    pays,
+                    name,
+                    location,
+                    price,
+                    description,
+                    nbpersonne,
+                    date,
+                    luggage
+                )
 
-                RetrofitInstance.api.putPost(id,updatedHotelBooking)
+                val response = try {
+                    RetrofitInstance.apit.putPost(id, updatedTransportBooking)
+                } catch (e: HttpException) {
+                    withContext(Dispatchers.Main) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "Erreur HTTP ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    return@launch
+                } catch (e: IOException) {
+                    withContext(Dispatchers.Main) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                "Erreur de l'application ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    return@launch
+                }
 
-            }catch (e: HttpException){
-                Toast.makeText(applicationContext,"http error ${e.message}",Toast.LENGTH_LONG).show()
-                return@launch
-            }catch (e: IOException){
-                Toast.makeText(applicationContext,"app error ${e.message}",Toast.LENGTH_LONG).show()
-                return@launch
-            }
-            if (response.isSuccessful && response.body() != null){
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     runOnUiThread {
-                        Toast.makeText(this@BookingTransportUpdate, "Mise à jour réussie", Toast.LENGTH_SHORT).show()
+                        if (response.isSuccessful && response.body() != null) {
+                            Toast.makeText(
+                                this@BookingTransportUpdate,
+                                "Mise à jour réussie",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@BookingTransportUpdate,
+                                "Échec de la mise à jour",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            } catch (e: NumberFormatException) {
+                withContext(Dispatchers.Main) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@BookingTransportUpdate,
+                            "Veuillez entrer des valeurs valides pour nbPersonne et Luggage",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
