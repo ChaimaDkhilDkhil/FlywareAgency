@@ -68,7 +68,7 @@ class transportsActivity : AppCompatActivity() {
         recyclerView.adapter = myAdapter
         myAdapter.onItemClick = {
             val intent = Intent(this, TransportsListActivity::class.java)
-            intent.putExtra("countryName", it.pays)
+            intent.putExtra("country", it.pays)
             this.startActivity(intent)
         }
     }

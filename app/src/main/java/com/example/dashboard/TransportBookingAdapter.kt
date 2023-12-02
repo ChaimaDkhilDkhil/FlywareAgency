@@ -42,7 +42,7 @@ class TransportBookingAdapter (var mList: ArrayList<TransportBooking>) : Recycle
 
         holder.update.setOnClickListener {
             val intent = Intent(holder.itemView.context, BookingTransportUpdate::class.java)
-            intent.putExtra("id", currentItem.id)
+            intent.putExtra("id", currentItem._id)
             intent.putExtra("name", currentItem.name)
             intent.putExtra("pays", currentItem.pays)
             intent.putExtra("location", currentItem.location)
@@ -58,7 +58,7 @@ class TransportBookingAdapter (var mList: ArrayList<TransportBooking>) : Recycle
         holder.delete.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
                 val response = try {
-                    RetrofitInstance.apit.deletePost(currentItem.id.toString())
+                    RetrofitInstance.apit.deletePost(currentItem._id.toString())
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
