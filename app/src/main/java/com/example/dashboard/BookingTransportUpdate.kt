@@ -48,12 +48,11 @@ class BookingTransportUpdate : AppCompatActivity() {
         val datevar = intent.getStringExtra("date")
         val luggage = intent.getIntExtra("luggage", 0)
 
-        findViewById<TextView>(R.id.transportNameUp).setText(name)
         findViewById<TextView>(R.id.transportLocationUp).setText(location)
         findViewById<TextView>(R.id.transportPriceUp).setText(price)
         findViewById<TextView>(R.id.nbpersonneUp).setText(nbPersonne.toString())
         findViewById<TextView>(R.id.dateUp).setText(datevar)
-        findViewById<TextView>(R.id.titleUp).setText(title)
+        findViewById<TextView>(R.id.titleUp).setText(name)
         findViewById<TextView>(R.id.transportluggageUp).setText(luggage.toString())
 
         val date = findViewById<EditText>(R.id.dateUp)

@@ -19,7 +19,6 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.util.Calendar
 
-@Suppress("DEPRECATION")
 class Detail_transportActivity : AppCompatActivity() {
 
     private lateinit var nbpersonne: EditText
@@ -30,7 +29,7 @@ class Detail_transportActivity : AppCompatActivity() {
     private lateinit var detailDesc: TextView
     private lateinit var price: TextView
     private lateinit var location: TextView
-    private lateinit var pays: String
+    private lateinit var pays: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_transport)
@@ -51,7 +50,7 @@ class Detail_transportActivity : AppCompatActivity() {
             }, year, month, day)
             datePickerDialog.show()
         }
-
+        pays = findViewById(R.id.transportPaysAdd)
         detailTitle = findViewById(R.id.transportNameAdd)
         detailDesc = findViewById(R.id.transportDescriptionAdd)
         price = findViewById(R.id.transportPriceAdd)
@@ -61,7 +60,7 @@ class Detail_transportActivity : AppCompatActivity() {
         detailDesc.text = intent.getStringExtra("description")
         price.text = intent.getStringExtra("price")
         location.text = intent.getStringExtra("location")
-        pays= intent.getStringExtra("country").toString()
+        pays.text= intent.getStringExtra("pays")
         detailImage.setImageResource(intent.getIntExtra("image", 0))
 
         btnbook.setOnClickListener {
@@ -74,15 +73,15 @@ class Detail_transportActivity : AppCompatActivity() {
     private fun postRequest() {
         GlobalScope.launch(Dispatchers.IO) {
             val response = try {
-                RetrofitInstance.apit.createBooking(
+                RetrofitInstance.apit.createTransportBooking(
                     TransportBooking(
                         null,
-                        pays,
                         detailTitle.text.toString(),
+                        pays.text.toString(),
                         detailTitle.text.toString(),
                         location.text.toString(),
                         price.text.toString(),
-                         detailDesc.text.toString(),
+                        detailDesc.text.toString(),
                         nbpersonne.text.toString().toIntOrNull() ?: 0, // Assuming nbPersonne is an Int
                         date.text.toString(), // Assuming date is a String
                         luggage.text.toString().toIntOrNull() ?: 0 // Assuming luggage is an Int
@@ -99,7 +98,6 @@ class Detail_transportActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(applicationContext, "App error ${e.message}", Toast.LENGTH_LONG).show()
                 }
-                // Log the error message for debugging
                 e.printStackTrace()
                 return@launch
             }
