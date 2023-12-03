@@ -2,6 +2,7 @@ package com.example.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.Profile
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -20,9 +21,6 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
-
         bottomNavigationView = findViewById(R.id.bottomnavigation)
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -33,6 +31,10 @@ open class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_home -> {
                     replaceFragment(HomeFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.menu_profile -> {
+                    replaceFragment(ProfileFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> false
