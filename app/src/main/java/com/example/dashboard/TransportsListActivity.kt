@@ -66,17 +66,12 @@ class TransportsListActivity : AppCompatActivity() {
         })
         myAdapter = TransportsAdapter(searchList)
         recyclerView.adapter = myAdapter
-        myAdapter.onItemClick = {
-            val intent = Intent(this, Detail_transportActivity::class.java)
-            intent.putExtra("countryName", it.pays)
-            this.startActivity(intent)
-        }
     }
     @OptIn(DelicateCoroutinesApi::class)
     private fun getRequest() {
         GlobalScope.launch(Dispatchers.IO) {
             val response = try {
-                RetrofitInstance.apit.getTransports("pays")
+                RetrofitInstance.apit.getTransports(pays)
             }catch (e: HttpException){
                 Toast.makeText(applicationContext,"http error ${e.message}", Toast.LENGTH_LONG).show()
                 return@launch
