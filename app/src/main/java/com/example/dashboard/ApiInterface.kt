@@ -24,4 +24,12 @@ interface ApiInterface {
         suspend fun deletePost(
                 @Path("id") id : String
         ) : Response<HotelBooking>
+        @POST("signup/")
+        suspend fun signup(
+                @Body user: User
+        ):Response<User>
+        @POST("signin/")
+        suspend fun signin(
+                @Body user: User
+        ):Response<User>
 }

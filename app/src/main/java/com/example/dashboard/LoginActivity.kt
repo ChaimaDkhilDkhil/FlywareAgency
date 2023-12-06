@@ -14,6 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.io.IOException
+import java.util.Locale
 
 
 class LoginActivity : AppCompatActivity() {
@@ -47,8 +54,7 @@ class LoginActivity : AppCompatActivity() {
         signup=findViewById(R.id.signup)
         val savedEmailLogin = sharedPreference.getValueString("EmailLogin")
         val savedPasswordLogin = sharedPreference.getValueString("PasswordLogin")
-        val savedEmail = sharedPreferenceSignup.getValueString("Email")
-        val savedPassword = sharedPreferenceSignup.getValueString("Password")
+
 
         if (savedEmailLogin !="" || savedPasswordLogin !=""){
             emailLogin.setText(savedEmailLogin)
@@ -80,7 +86,8 @@ class LoginActivity : AppCompatActivity() {
                 sharedPreference.save("EmailLogin", name)
                 sharedPreference.save("PasswordLogin", password)
             }else{
-                sharedPreference.clearSharedPreference()
+                sharedPreference.removeValue("EmailLogin")
+                sharedPreference.removeValue("PasswordLogin")
             }
             if ((emailLogin.getText().length===0)||(passwordLogin.getText().length===0)){
                 val ad: AlertDialog.Builder
@@ -91,17 +98,49 @@ class LoginActivity : AppCompatActivity() {
                 val a = ad.create()
                 a.show()
             }
-            else{
-                if ((name.equals(savedEmail))&&(password.equals(savedPassword))){
-                    startActivity(Intent(this@LoginActivity,MainActivity::class.java))}
-                else{
-                    val ad: AlertDialog.Builder
-                    ad = AlertDialog.Builder(this)
-                    ad.setMessage("email ou password incorrecte")
-                    ad.setTitle("Error")
-                    ad.setIcon(android.R.drawable.btn_dialog)
-                    val a = ad.create()
-                    a.show()}
+            else {
+                val user = User(name, password)
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    try {
+                        val response = RetrofitInstance.api.signin(user)
+
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful && response.body() != null) {
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                sharedPreference.save("Email", name)
+                                sharedPreference.save("Password", password)
+                            } else {
+                                val ad: AlertDialog.Builder =
+                                    AlertDialog.Builder(this@LoginActivity)
+                                ad.setMessage("email ou password incorrecte")
+                                ad.setTitle("Error")
+                                ad.setIcon(android.R.drawable.btn_dialog)
+                                val a = ad.create()
+                                a.show()
+                            }
+                        }
+                    } catch (e: HttpException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                "HTTP error ${e.code()}: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        // Log the error message for debugging
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                "App error ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        e.printStackTrace()
+                    }
+                }
             }
         }
         signup.setOnClickListener {
@@ -117,8 +156,36 @@ class LoginActivity : AppCompatActivity() {
                 val a = ad.create()
                 a.show()}
             else if(name !="" && password !="" && confirmedPassword !=""){
-                sharedPreferenceSignup.save("Email", name)
-                sharedPreferenceSignup.save("Password", password)
+
+                val user = User(name, password)
+                GlobalScope.launch(Dispatchers.IO) {
+                    val response = try {
+                        RetrofitInstance.api.signup(
+                            user
+                        )
+                    } catch (e: HttpException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                "HTTP error ${e.code()}: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        // Log the error message for debugging
+                        e.printStackTrace()
+                        return@launch
+                    } catch (e: IOException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                applicationContext,
+                                "App error ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        e.printStackTrace()
+                        return@launch
+                    }
+                }
                 Toast.makeText(this, "Compte créé avec succès", Toast.LENGTH_LONG).show();
             }else{
                 val ad: AlertDialog.Builder

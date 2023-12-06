@@ -25,7 +25,7 @@ class TransportsAdapter(private val dataList: ArrayList<Transports>) : RecyclerV
         holder.rvLocation.text = currentItem.transport.location
         holder.rvPrice.text = currentItem.transport.price
         holder.button.setOnClickListener() {
-            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
+            val intent = Intent(holder.itemView.context, Detail_transportActivity::class.java)
             intent.putExtra("image", dataList[position].img)
             intent.putExtra("pays", dataList[position].pays)
             intent.putExtra("name", dataList[position].transport.name)

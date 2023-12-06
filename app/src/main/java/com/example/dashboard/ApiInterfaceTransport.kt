@@ -8,9 +8,10 @@ interface ApiInterfaceTransport {
     @GET("/transports/{pays}/")
     suspend fun getTransports(@Path("pays") pays: String?): Response<List<Transports>>
     @POST("transportBookings/")
-    suspend fun createBooking(
+    suspend fun createTransportBooking(
         @Body transportBooking: TransportBooking
-    ):Response<TransportBooking>
+    ): Response<TransportBooking>
+
     @GET("transportBookings/")
     suspend fun getTransportBookings(): Response<List<TransportBooking>>
 
