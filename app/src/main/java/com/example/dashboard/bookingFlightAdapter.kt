@@ -31,26 +31,25 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
     override fun onBindViewHolder(holder: bookingViewHolder, position: Int) {
         val currentItem = mList[position]
 
-        holder.duration.text = "${currentItem.duration}"
-        holder.date.text = "${currentItem.date}"
-        holder.returndate.text = "${currentItem.returnDate}"
-        holder.destination.text = "${currentItem.destination}"
-        holder.departure.text = "${currentItem.departure}"
-        holder.price.text = "${currentItem.price} $"
+        holder.duration.text = "${currentItem.flight.duration}"
+        holder.date.text = "${currentItem.flight.date}"
+        holder.returndate.text = "${currentItem.flight.returnDate}"
+        holder.destination.text = "${currentItem.flight.destination}"
+        holder.departure.text = "${currentItem.flight.departure}"
+        holder.price.text = "${currentItem.flight.price} $"
 
         holder.update.setOnClickListener {
             val intent = Intent(holder.itemView.context, bookingUpdate::class.java)
-            intent.putExtra("id", currentItem.id)
-            intent.putExtra("duration", currentItem.duration)
-            intent.putExtra("date", currentItem.date)
-            intent.putExtra("returnDate", currentItem.returnDate)
-            intent.putExtra("destination", currentItem.destination)
-            intent.putExtra("departure", currentItem.departure)
-            intent.putExtra("price", currentItem.price)
+            intent.putExtra("id", currentItem._id)
+            intent.putExtra("duration", currentItem.flight.duration)
+            intent.putExtra("date", currentItem.flight.date)
+            intent.putExtra("returnDate", currentItem.flight.returnDate)
+            intent.putExtra("destination", currentItem.flight.destination)
+            intent.putExtra("departure", currentItem.flight.departure)
+            intent.putExtra("price", currentItem.flight.price)
             intent.putExtra("nbAdult", currentItem.nbAdult)
             intent.putExtra("nbChildren", currentItem.nbChildren)
-            intent.putExtra("travelClass", currentItem.clase)
-
+            intent.putExtra("travelClass", currentItem.travelClass)
             holder.itemView.context.startActivity(intent)
         }
 
@@ -63,23 +62,18 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
         return mList.size
     }
 
-    // Method to delete an item from the list and JSON file
     private fun deleteItem(position: Int) {
         val currentItem = mList[position]
 
-        // Assuming your server URL for deleting is like: .../bookings/{bookingId}
-        val deleteUrl = "http://192.168.56.1:3000/bookings/${currentItem.id}"
+        val deleteUrl = "http://192.168.56.1:3000/bookings/${currentItem._id}"
         val deleteRequest = StringRequest(Request.Method.DELETE, deleteUrl,
             { response ->
-                // Delete the item from the list
                 mList.removeAt(position)
                 notifyDataSetChanged()
             },
             { error ->
-                // Handle the error
             })
 
-        // Add the request to the request queue
         requestQueue?.add(deleteRequest)
     }
 }

@@ -1,6 +1,5 @@
 package com.example.dashboard
 
-import android.annotation.SuppressLint
 import  androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -20,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.Locale
 
 
 class LoginActivity : AppCompatActivity() {
@@ -41,39 +39,39 @@ class LoginActivity : AppCompatActivity() {
         val singUp = findViewById<TextView>(R.id.singUp)
         val logIn = findViewById<TextView>(R.id.logIn)
         val singUpLayout = findViewById<LinearLayout>(R.id.singUpLayout)
-        val logInLayout  = findViewById<LinearLayout>(R.id.logInLayout)
+        val logInLayout = findViewById<LinearLayout>(R.id.logInLayout)
         val signIn = findViewById<TextView>(R.id.singIn)
         sharedPreference = SharedPreferenceLogin(this)
         sharedPreferenceSignup = SharedPreferenceSignup(this)
-        emailLogin=findViewById(R.id.eMailLogin)
-        passwordLogin=findViewById(R.id.passwordLogin)
-        checkBox=findViewById(R.id.checkBox)
-        email=findViewById(R.id.eMail)
-        password=findViewById(R.id.password)
-        confirmedPassword=findViewById(R.id.confirmPassword)
-        signup=findViewById(R.id.signup)
+        emailLogin = findViewById(R.id.eMailLogin)
+        passwordLogin = findViewById(R.id.passwordLogin)
+        checkBox = findViewById(R.id.checkBox)
+        email = findViewById(R.id.eMail)
+        password = findViewById(R.id.password)
+        confirmedPassword = findViewById(R.id.confirmPassword)
+        signup = findViewById(R.id.signup)
         val savedEmailLogin = sharedPreference.getValueString("EmailLogin")
         val savedPasswordLogin = sharedPreference.getValueString("PasswordLogin")
 
 
-        if (savedEmailLogin !="" || savedPasswordLogin !=""){
+        if (savedEmailLogin != "" || savedPasswordLogin != "") {
             emailLogin.setText(savedEmailLogin)
             passwordLogin.setText(savedPasswordLogin)
         }
 
         singUp.setOnClickListener {
-            singUp.background = resources.getDrawable(R.drawable.switch_trcks,null)
-            singUp.setTextColor(resources.getColor(R.color.textColor,null))
+            singUp.background = resources.getDrawable(R.drawable.switch_trcks, null)
+            singUp.setTextColor(resources.getColor(R.color.textColor, null))
             logIn.background = null
             singUpLayout.visibility = View.VISIBLE
             logInLayout.visibility = View.GONE
-            logIn.setTextColor(resources.getColor(R.color.teal_700,null))
+            logIn.setTextColor(resources.getColor(R.color.teal_700, null))
         }
 
         logIn.setOnClickListener {
             singUp.background = null
             singUp.setTextColor(resources.getColor(R.color.teal_700))
-            logIn.background = resources.getDrawable(R.drawable.switch_trcks,null)
+            logIn.background = resources.getDrawable(R.drawable.switch_trcks, null)
             singUpLayout.visibility = View.GONE
             logInLayout.visibility = View.VISIBLE
             logIn.setTextColor(resources.getColor(R.color.textColor))
@@ -82,14 +80,14 @@ class LoginActivity : AppCompatActivity() {
             val name = emailLogin.text.toString()
             val password = passwordLogin.text.toString()
 
-            if(name !="" && password !="" && checkBox.isChecked){
+            if (name != "" && password != "" && checkBox.isChecked) {
                 sharedPreference.save("EmailLogin", name)
                 sharedPreference.save("PasswordLogin", password)
-            }else{
+            } else {
                 sharedPreference.removeValue("EmailLogin")
                 sharedPreference.removeValue("PasswordLogin")
             }
-            if ((emailLogin.getText().length===0)||(passwordLogin.getText().length===0)){
+            if ((emailLogin.getText().length === 0) || (passwordLogin.getText().length === 0)) {
                 val ad: AlertDialog.Builder
                 ad = AlertDialog.Builder(this)
                 ad.setMessage("Les champs ne doivent pas être vide")
@@ -97,9 +95,8 @@ class LoginActivity : AppCompatActivity() {
                 ad.setIcon(android.R.drawable.btn_dialog)
                 val a = ad.create()
                 a.show()
-            }
-            else {
-                val user = User(name, password)
+            } else {
+                val user = User(null, name, password)
 
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
@@ -108,6 +105,12 @@ class LoginActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             if (response.isSuccessful && response.body() != null) {
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                response.body()!!._id?.let { it1 ->
+                                    sharedPreference.save(
+                                        "id",
+                                        it1
+                                    )
+                                }
                                 sharedPreference.save("Email", name)
                                 sharedPreference.save("Password", password)
                             } else {
@@ -128,7 +131,6 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        // Log the error message for debugging
                         e.printStackTrace()
                     } catch (e: IOException) {
                         withContext(Dispatchers.Main) {
@@ -147,56 +149,66 @@ class LoginActivity : AppCompatActivity() {
             val name = email.text.toString()
             val password = password.text.toString()
             val confirmedPassword = confirmedPassword.text.toString()
-            if (!password.equals(confirmedPassword)){
-                val ad: AlertDialog.Builder
-                ad = AlertDialog.Builder(this)
-                ad.setMessage("password et confirmed password doivent être égaux")
-                ad.setTitle("Error")
-                ad.setIcon(android.R.drawable.btn_dialog)
-                val a = ad.create()
-                a.show()}
-            else if(name !="" && password !="" && confirmedPassword !=""){
 
-                val user = User(name, password)
+            if (!password.equals(confirmedPassword)) {
+                val ad: AlertDialog.Builder = AlertDialog.Builder(this)
+                ad.setMessage("Le mot de passe et la confirmation du mot de passe doivent être identiques")
+                ad.setTitle("Erreur")
+                ad.setIcon(android.R.drawable.btn_dialog)
+                val a: AlertDialog = ad.create()
+                a.show()
+            } else if (name.isNotEmpty() && password.isNotEmpty() && confirmedPassword.isNotEmpty()) {
                 GlobalScope.launch(Dispatchers.IO) {
-                    val response = try {
-                        RetrofitInstance.api.signup(
-                            user
-                        )
-                    } catch (e: HttpException) {
+                    try {
+                        // Effectuer la demande d'inscription
+                        val response = RetrofitInstance.api.signup(User(null, name, password))
+
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                applicationContext,
-                                "HTTP error ${e.code()}: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            if (response.isSuccessful) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Compte créé avec succès",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                val responseBody = response.errorBody()?.string()
+                                if (responseBody?.contains("Username already exists") == true) {
+                                    val ad: AlertDialog.Builder =
+                                        AlertDialog.Builder(this@LoginActivity)
+                                    ad.setMessage("Le nom d'utilisateur existe déjà. Veuillez en choisir un autre.")
+                                    ad.setTitle("Erreur")
+                                    ad.setIcon(android.R.drawable.btn_dialog)
+                                    val a: AlertDialog = ad.create()
+                                    a.show()
+                                } else {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Erreur inconnue lors de l'inscription",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
                         }
-                        // Log the error message for debugging
-                        e.printStackTrace()
-                        return@launch
                     } catch (e: IOException) {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 applicationContext,
-                                "App error ${e.message}",
+                                "Erreur de l'application ${e.message}",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
                         e.printStackTrace()
-                        return@launch
                     }
                 }
-                Toast.makeText(this, "Compte créé avec succès", Toast.LENGTH_LONG).show();
-            }else{
-                val ad: AlertDialog.Builder
-                ad = AlertDialog.Builder(this)
-                ad.setMessage("Les champs ne doivent pas être vide")
-                ad.setTitle("Error")
+            } else {
+                val ad: AlertDialog.Builder = AlertDialog.Builder(this)
+                ad.setMessage("Les champs ne doivent pas être vides")
+                ad.setTitle("Erreur")
                 ad.setIcon(android.R.drawable.btn_dialog)
-                val a = ad.create()
+                val a: AlertDialog = ad.create()
                 a.show()
             }
         }
-    }
 
-}
+    }
+    }

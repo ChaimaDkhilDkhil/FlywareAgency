@@ -1,3 +1,5 @@
 package com.example.dashboard
 
-class Booking(val id:String,val destination: String ,val date: String ,val returnDate: String ,val departure: String ,val price: Double ,val duration: String , val nbChildren : Int, val nbAdult : Int, val clase: String)
+
+class Booking (val _id: String, val user: User, val flight: flight_items_view_model, val nbAdult: Int, val nbChildren: Int, val travelClass: String
+)

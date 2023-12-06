@@ -46,6 +46,7 @@ class flight_adapter(var mList: ArrayList<flight_items_view_model>) : RecyclerVi
 
         holder.button.setOnClickListener() {
             val intent = Intent(holder.itemView.context, BookingActivity::class.java)
+            intent.putExtra("id", mList[position]._id)
             intent.putExtra("duration", mList[position].duration)
             intent.putExtra("date", mList[position].date)
             intent.putExtra("returnDate", mList[position].returnDate)
