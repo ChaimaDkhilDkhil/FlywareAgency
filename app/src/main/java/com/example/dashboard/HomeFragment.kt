@@ -26,6 +26,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var adapter: RecyclerView.Adapter<*>? = null
     private var recyclerViewList: RecyclerView? = null
     private var googleMap: GoogleMap? = null
+    private var lastKnownLocation: LatLng? = null
+    private var isMapInitialized = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,17 +39,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewList = view.findViewById(R.id.view)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
-            ?: SupportMapFragment.newInstance().also {
-                childFragmentManager.beginTransaction().replace(R.id.mapContainer, it).commit()
-                it.getMapAsync(this)
-            }
-        // Initialize FusedLocationProviderClient
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        // Initialize the map only if it hasn't been initialized before
+        if (!isMapInitialized) {
+            recyclerViewList = view.findViewById(R.id.view)
+            val mapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
+                ?: SupportMapFragment.newInstance().also {
+                    childFragmentManager.beginTransaction().replace(R.id.mapContainer, it).commit()
+                    it.getMapAsync(this)
+                }
 
-        // Fetch location and display it on the map
-        fetchLocation()
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+            fetchLocation()
+            isMapInitialized = true
+        }
 
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -79,6 +83,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fetch location when the fragment is resumed (e.g., after returning from another fragment)
+        fetchLocation()
+    }
+
     private fun fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -89,7 +99,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Request location permission if not granted
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(
@@ -99,55 +108,51 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 REQUEST_CODE
             )
         } else {
-            // Permission already granted, fetch location
             fusedLocationProviderClient.lastLocation
                 .addOnSuccessListener { location ->
                     if (location != null) {
                         currentLocation = location
-                        // Display the location on the map
-                        googleMap?.let {
-                            showLocationOnMap(it)
+                        lastKnownLocation = LatLng(location.latitude, location.longitude)
+                        googleMap?.let { map ->
+                            showLocationOnMap(map)
                         }
                     } else {
                         Log.e("Location", "Null location received.")
-                        // If location is null, manually set the default location to Tunis
-                        showLocationOnMap(googleMap!!)
+                        googleMap?.let { map ->
+                            showLocationOnMap(map, lastKnownLocation ?: LatLng(36.8065, 10.1815))
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
                     Log.e("Location", "Error getting location: ${e.message}")
-                    // If there is an error fetching the location, manually set the default location to Tunis
-                    showLocationOnMap(googleMap!!)
+                    googleMap?.let { map ->
+                        showLocationOnMap(map, lastKnownLocation ?: LatLng(36.8065, 10.1815))
+                    }
                 }
         }
     }
 
-    private fun showLocationOnMap(googleMap: GoogleMap) {
-        // Display the location on the map
-        val tunisLatLng = LatLng(36.8065, 10.1815) // Coordinates for Tunis
-        val markerOptions = MarkerOptions().position(tunisLatLng).title("Tunis")
+    private fun showLocationOnMap(googleMap: GoogleMap, location: LatLng? = null) {
+        val targetLocation = location ?: LatLng(36.8065, 10.1815) // Default to Tunisia if location is null
+        val markerOptions = MarkerOptions().position(targetLocation).title("Tunis")
 
-        googleMap.clear() // Clear any existing markers
+        googleMap.clear()
         googleMap.addMarker(markerOptions)
 
-        // Center the map on Tunis
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tunisLatLng, 12f))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 12f))
     }
 
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
 
-        // Center the map on Tunisia
         val tunisiaCenter = LatLng(33.8869, 9.5375)
         googleMap?.moveCamera(CameraUpdateFactory.newLatLng(tunisiaCenter))
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
-
     ) {
         Log.d("Permission", "Permission result received: $requestCode")
         if (requestCode == REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
