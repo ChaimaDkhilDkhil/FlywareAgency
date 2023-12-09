@@ -26,6 +26,7 @@ class BookingActivity : AppCompatActivity() {
     lateinit var returnDate:String
     lateinit var destination:String
     lateinit var departure:String
+    private lateinit var sharedPreference: SharedPreferenceLogin
     var price:Double=0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +40,10 @@ class BookingActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, classes)
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sharedPreference = SharedPreferenceLogin(this)
 
         classSpinner.adapter = adapter
+        val id = intent.getStringExtra("id").toString()
         duration = intent.getStringExtra("duration").toString()
         date = intent.getStringExtra("date").toString()
         returnDate = intent.getStringExtra("returnDate").toString()
@@ -60,12 +63,8 @@ class BookingActivity : AppCompatActivity() {
         btnbook.setOnClickListener {
             val url = "http://192.168.56.1:3000/bookings"
             val jsonObject = JSONObject().apply {
-                put("duration", duration)
-                put("date", date)
-                put("returnDate", returnDate)
-                put("destination", destination)
-                put("departure", departure)
-                put("price", price)
+                put("flight", id)
+                put("user",sharedPreference.getValueString("id"))
                 put("nbAdult", nbAdulte.text.toString().toInt())
                 put("nbChildren", nbChildren.text.toString().toInt())
                 put("travelClass", classSpinner.selectedItem.toString())
@@ -84,11 +83,7 @@ class BookingActivity : AppCompatActivity() {
                     error.printStackTrace()
                 }) {
             }
-
-
             requestQueue?.add(request)
-
-
         }
     }
 }

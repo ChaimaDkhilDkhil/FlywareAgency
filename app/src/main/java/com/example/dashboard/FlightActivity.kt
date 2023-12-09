@@ -9,14 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 import java.util.Locale
-import kotlin.math.log
 
 
 class FlightActivity : AppCompatActivity() {
@@ -62,6 +60,7 @@ class FlightActivity : AppCompatActivity() {
                 Log.e("resLen",response.length().toString())
                 for (i in 0 until response.length()) {
                     val user = response.getJSONObject(i)
+                    val id = user.getString("_id")
                     val duration = user.getString("duration")
                     val date = user.getString("date")
                     val returnDate = user.getString("returnDate")
@@ -73,6 +72,7 @@ class FlightActivity : AppCompatActivity() {
                     val drawableId = resources.getIdentifier(drawableName, "drawable", packageName)
 
                     val flightItem = flight_items_view_model(
+                        id,
                         destination,
                         date,
                         returnDate,

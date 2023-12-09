@@ -62,7 +62,8 @@ class hotelBookingFragment : Fragment() {
                                 hotelBooking.description,
                                 hotelBooking.nbRoom,
                                 hotelBooking.date,
-                                hotelBooking.duration
+                                hotelBooking.duration ,
+                                hotelBooking.status
                             )
                             mList.add(hotelItem)
                         }

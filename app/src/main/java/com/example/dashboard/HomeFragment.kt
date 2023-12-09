@@ -9,6 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
+
+
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +34,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var adapter: RecyclerView.Adapter<*>? = null
     private var recyclerViewList: RecyclerView? = null
     private var googleMap: GoogleMap? = null
-
+ override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +63,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerViewList?.layoutManager = linearLayoutManager
-
         val news = ArrayList<ListDomain>()
         news.add(ListDomain("Browsing trips in Belgium", "pic1"))
         news.add(ListDomain("book a flight to Tunisia", "tunisia3"))
@@ -60,7 +70,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         news.add(ListDomain("Stays in Rome", "roma2"))
         adapter = NewsAdapter(news)
         recyclerViewList?.adapter = adapter
-
         val flightButton = view.findViewById<Button>(R.id.flightButton)
         flightButton.setOnClickListener {
             val intent = Intent(requireContext(), FlightActivity::class.java)

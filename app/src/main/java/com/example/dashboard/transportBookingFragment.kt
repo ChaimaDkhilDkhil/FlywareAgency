@@ -53,7 +53,8 @@ class transportBookingFragment : Fragment() {
                                     transportBooking.description ?: "",
                                     transportBooking.nbPersonne ?: 0,
                                     transportBooking.date ?: "",
-                                    transportBooking.luggage ?: 0
+                                    transportBooking.luggage ?: 0,
+                                    transportBooking.status
                                 )
                                 mList.add(transportItem)
                             }

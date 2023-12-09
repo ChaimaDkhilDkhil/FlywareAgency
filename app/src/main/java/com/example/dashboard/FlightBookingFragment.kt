@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
 
@@ -36,46 +37,69 @@ class FlightBookingFragment : Fragment() {
         val request = JsonArrayRequest(Request.Method.GET, url, null, { response ->
             try {
                 for (i in 0 until response.length()) {
-                    val user = response.getJSONObject(i)
-                    val id = user.getString("_id")
-                    val duration = user.getString("duration")
-                    val date = user.getString("date")
-                    val returnDate = user.getString("returnDate")
-                    val destination = user.getString("destination")
-                    val departure = user.getString("departure")
-                    val price = user.getDouble("price")
-                    val nbAdult = user.getInt("nbAdult")
-                    val nbChildren = user.getInt("nbChildren")
-                    val travelClass = user.getString("travelClass")
+                    val book = response.getJSONObject(i)
+                    val id = book.getString("_id")
 
+                    val userId = book.getString("user")
+                    val userUrl = "http://192.168.56.1:3000/user/$userId"
+                    val userRequest = JsonObjectRequest(Request.Method.GET, userUrl, null,
+                        { userResponse ->
+                            val user = User(
+                                userResponse.getString("_id"),
+                                userResponse.getString("username"),
+                                userResponse.getString("password"),
+                                userResponse.getString("token")
+                            )
+                            val flightId = book.getString("flight")
+                            val flightUrl = "http://192.168.56.1:3000/flights/$flightId"
+                            val flightRequest = JsonObjectRequest(Request.Method.GET, flightUrl, null,
+                                { flightResponse ->
+                                    val flight = flight_items_view_model(
+                                        flightResponse.getString("_id"),
+                                        flightResponse.getString("destination"),
+                                        flightResponse.getString("date"),
+                                        flightResponse.getString("returnDate"),
+                                        flightResponse.getString("departure"),
+                                        flightResponse.getDouble("price"),
+                                        flightResponse.getString("duration"),
+                                        0
+                                    )
 
-                    val booking = Booking(
-                        id,
-                        destination,
-                        date,
-                        returnDate,
-                        departure,
-                        price,
-                        duration,
-                        nbChildren ,
-                        nbAdult,
-                        travelClass
+                                    val nbAdult = book.getInt("nbAdult")
+                                    val nbChildren = book.getInt("nbChildren")
+                                    val travelClass = book.getString("travelClass")
+                                    val status=book.getString("status")
+                                    val booking = Booking(
+                                        id,
+                                        user,
+                                        flight,
+                                        nbChildren,
+                                        nbAdult,
+                                        travelClass,
+                                        status
+                                    )
+                                    mList.add(booking)
+
+                                    manager = LinearLayoutManager(requireContext())
+                                    myAdapter = bookingFlightAdapter(mList, requestQueue)
+                                    recyclerView.layoutManager = manager
+                                    recyclerView.adapter = myAdapter
+                                },
+                                { error -> error.printStackTrace() }
+                            )
+
+                            requestQueue?.add(flightRequest)
+                        },
+                        { error -> error.printStackTrace() }
                     )
-                    mList.add(booking)
+
+                    requestQueue?.add(userRequest)
                 }
-
-                manager = LinearLayoutManager(requireContext())
-                myAdapter = bookingFlightAdapter(mList,requestQueue)
-
-                recyclerView.layoutManager = manager
-                recyclerView.adapter = myAdapter
-
             } catch (e: JSONException) {
                 e.printStackTrace()
-
             }
-        }, { error -> error.printStackTrace()
-        })
+        }, { error -> error.printStackTrace() })
+
         requestQueue?.add(request)
-    }
-}
+
+    }}

@@ -51,22 +51,22 @@ class DetailActivity : AppCompatActivity() {
             }, year, month, day)
             datePickerDialog.show()
         }
-         detailTitle = findViewById(R.id.hotelNameAdd)
-         detailDesc = findViewById(R.id.hotelDescriptionAdd)
-         price = findViewById(R.id.hotelPriceAdd)
-         location = findViewById(R.id.hotelLocationAdd)
-            val detailImage: ImageView = findViewById(R.id.hotelImageAdd)
-            detailTitle.text =intent.getStringExtra("name")
-            detailDesc.text = intent.getStringExtra("description")
-            price.text =intent.getStringExtra("price")
-            location.text =  intent.getStringExtra("location")
-            pays = intent.getStringExtra("pays").toString()
+        detailTitle = findViewById(R.id.hotelNameAdd)
+        detailDesc = findViewById(R.id.hotelDescriptionAdd)
+        price = findViewById(R.id.hotelPriceAdd)
+        location = findViewById(R.id.hotelLocationAdd)
+        val detailImage: ImageView = findViewById(R.id.hotelImageAdd)
+        detailTitle.text =intent.getStringExtra("name")
+        detailDesc.text = intent.getStringExtra("description")
+        price.text =intent.getStringExtra("price")
+        location.text =  intent.getStringExtra("location")
+        pays = intent.getStringExtra("pays").toString()
 
         detailImage.setImageResource(intent.getIntExtra("image",0))
         btnbook.setOnClickListener {
             postRequest()
         }
-        }
+    }
 
     @SuppressLint("SetTextI18n")
     @OptIn(DelicateCoroutinesApi::class)
