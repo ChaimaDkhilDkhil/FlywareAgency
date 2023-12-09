@@ -3,7 +3,8 @@
     package="com.example.dashboard">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,6 +32,9 @@
         <activity
             android:name=".NotificationActivity"
             android:exported="false" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDrNBSZxut6BY1zPShSEUR6Iz5upIFFoa0" />
         <activity
             android:name=".TransportsListActivity"
             android:exported="false" />
