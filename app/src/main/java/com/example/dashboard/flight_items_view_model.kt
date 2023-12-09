@@ -7,4 +7,5 @@ class flight_items_view_model(
     val returnDate: String,
     val departure: String,
     val price: Double,
-    val duration: String, val logo: Int)
+    val duration: String,
+val logo: Int)

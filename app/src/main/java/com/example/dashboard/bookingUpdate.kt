@@ -1,5 +1,6 @@
 package com.example.dashboard
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -76,7 +77,7 @@ class bookingUpdate : AppCompatActivity() {
             val request = JsonObjectRequest(
                 Request.Method.PUT, url, updatedData,
                 { response ->
-                    Toast.makeText(this, "JSON file updated successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "flight booking updated successfully", Toast.LENGTH_SHORT).show()
                 },
                 { error ->
                     Toast.makeText(this, "Error updating JSON file", Toast.LENGTH_SHORT).show()

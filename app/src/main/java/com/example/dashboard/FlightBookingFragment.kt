@@ -47,7 +47,8 @@ class FlightBookingFragment : Fragment() {
                             val user = User(
                                 userResponse.getString("_id"),
                                 userResponse.getString("username"),
-                                userResponse.getString("password")
+                                userResponse.getString("password"),
+                                userResponse.getString("token")
                             )
                             val flightId = book.getString("flight")
                             val flightUrl = "http://192.168.56.1:3000/flights/$flightId"
@@ -67,13 +68,15 @@ class FlightBookingFragment : Fragment() {
                                     val nbAdult = book.getInt("nbAdult")
                                     val nbChildren = book.getInt("nbChildren")
                                     val travelClass = book.getString("travelClass")
+                                    val status=book.getString("status")
                                     val booking = Booking(
                                         id,
                                         user,
                                         flight,
                                         nbChildren,
                                         nbAdult,
-                                        travelClass
+                                        travelClass,
+                                        status
                                     )
                                     mList.add(booking)
 

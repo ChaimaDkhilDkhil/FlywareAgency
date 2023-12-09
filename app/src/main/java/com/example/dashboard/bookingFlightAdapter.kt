@@ -19,6 +19,7 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
         val destination: TextView = itemView.findViewById(R.id.hotelNameList)
         val departure: TextView = itemView.findViewById(R.id.departure)
         val price: TextView = itemView.findViewById(R.id.hotePriceList)
+        val status: TextView = itemView.findViewById(R.id.status)
         val update: FloatingActionButton = itemView.findViewById(R.id.update)
         val delete: FloatingActionButton = itemView.findViewById(R.id.delete)
     }
@@ -38,6 +39,10 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
         holder.departure.text = "${currentItem.flight.departure}"
         holder.price.text = "${currentItem.flight.price} $"
 
+        if (currentItem.status == "en attente") {
+            holder.status.visibility = View.GONE
+            holder.update.visibility = View.VISIBLE
+            holder.delete.visibility = View.VISIBLE
         holder.update.setOnClickListener {
             val intent = Intent(holder.itemView.context, bookingUpdate::class.java)
             intent.putExtra("id", currentItem._id)
@@ -54,10 +59,14 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
         }
 
         holder.delete.setOnClickListener {
-            deleteItem(position)
+            deleteItem(position)}
+        } else {
+            holder.status.visibility = View.VISIBLE
+            holder.update.visibility = View.GONE
+                holder.delete.visibility = View.GONE
+                holder.status.text = "${currentItem.status}"
+            }
         }
-    }
-
     override fun getItemCount(): Int {
         return mList.size
     }

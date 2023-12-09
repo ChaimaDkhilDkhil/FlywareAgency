@@ -22,6 +22,8 @@ class TransportBookingAdapter (var mList: ArrayList<TransportBooking>) : Recycle
         val country: TextView = itemView.findViewById(R.id.transportCountryList)
         val name: TextView = itemView.findViewById(R.id.transportNameList)
         val price: TextView = itemView.findViewById(R.id.transportPriceList)
+        val transportstatus: TextView = itemView.findViewById(R.id.transportstatus)
+
         val update: FloatingActionButton = itemView.findViewById(R.id.updateTransport)
         val delete: FloatingActionButton = itemView.findViewById(R.id.deleteTransport)
     }
@@ -39,7 +41,10 @@ class TransportBookingAdapter (var mList: ArrayList<TransportBooking>) : Recycle
         holder.name.text = "${currentItem.name}"
         holder.price.text = "${currentItem.price}"
 
-
+        if (currentItem.status == "en attente") {
+            holder.transportstatus.visibility = View.GONE
+            holder.update.visibility = View.VISIBLE
+            holder.delete.visibility = View.VISIBLE
         holder.update.setOnClickListener {
             val intent = Intent(holder.itemView.context, BookingTransportUpdate::class.java)
             intent.putExtra("id", currentItem._id)
@@ -83,9 +88,15 @@ class TransportBookingAdapter (var mList: ArrayList<TransportBooking>) : Recycle
                         notifyItemRangeChanged(position, mList.size)
                     }
                 }
-            }        }
+            }
+        }
+        } else {
+            holder.transportstatus.visibility = View.VISIBLE
+            holder.update.visibility = View.GONE
+            holder.delete.visibility = View.GONE
+            holder.transportstatus.text = "${currentItem.status}"
+        }
     }
-
     override fun getItemCount(): Int {
         return mList.size
     }

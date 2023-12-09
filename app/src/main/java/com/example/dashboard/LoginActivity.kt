@@ -4,6 +4,7 @@ import  androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -13,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signup: Button
     private lateinit var sharedPreference: SharedPreferenceLogin
     private lateinit var sharedPreferenceSignup: SharedPreferenceSignup
+    private lateinit var fcmToken: String
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +56,12 @@ class LoginActivity : AppCompatActivity() {
         val savedEmailLogin = sharedPreference.getValueString("EmailLogin")
         val savedPasswordLogin = sharedPreference.getValueString("PasswordLogin")
 
-
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful() && task.result != null) {
+                     fcmToken = task.result
+                }
+            }
         if (savedEmailLogin != "" || savedPasswordLogin != "") {
             emailLogin.setText(savedEmailLogin)
             passwordLogin.setText(savedPasswordLogin)
@@ -96,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                 val a = ad.create()
                 a.show()
             } else {
-                val user = User(null, name, password)
+                val user = User(null, name, password,fcmToken)
 
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
@@ -113,6 +121,8 @@ class LoginActivity : AppCompatActivity() {
                                 }
                                 sharedPreference.save("Email", name)
                                 sharedPreference.save("Password", password)
+                                sharedPreference.save("token", fcmToken)
+
                             } else {
                                 val ad: AlertDialog.Builder =
                                     AlertDialog.Builder(this@LoginActivity)
@@ -160,8 +170,7 @@ class LoginActivity : AppCompatActivity() {
             } else if (name.isNotEmpty() && password.isNotEmpty() && confirmedPassword.isNotEmpty()) {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
-                        // Effectuer la demande d'inscription
-                        val response = RetrofitInstance.api.signup(User(null, name, password))
+                        val response = RetrofitInstance.api.signup(User(null, name, password,fcmToken))
 
                         withContext(Dispatchers.Main) {
                             if (response.isSuccessful) {

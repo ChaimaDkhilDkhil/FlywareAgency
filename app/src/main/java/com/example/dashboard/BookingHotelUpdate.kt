@@ -1,6 +1,7 @@
 package com.example.dashboard
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -107,6 +108,7 @@ class BookingHotelUpdate : AppCompatActivity() {
             if (response.isSuccessful && response.body() != null){
                 withContext(Dispatchers.Main){
                     runOnUiThread {
+
                         Toast.makeText(this@BookingHotelUpdate, "Mise à jour réussie", Toast.LENGTH_SHORT).show()
                     }
                 }
