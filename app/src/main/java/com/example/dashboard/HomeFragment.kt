@@ -9,14 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.FirebaseApp
-import com.google.firebase.messaging.FirebaseMessaging
-
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -31,10 +27,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     private var lastKnownLocation: LatLng? = null
     private var isMapInitialized = false
- override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(requireContext())
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -139,8 +131,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun showLocationOnMap(googleMap: GoogleMap, location: LatLng? = null) {
-        val targetLocation = location ?: LatLng(36.8065, 10.1815) // Default to Tunisia if location is null
-        val markerOptions = MarkerOptions().position(targetLocation).title("Tunis")
+        val targetLocation = location ?: LatLng(36.8065, 10.1815)
+        val markerOptions = MarkerOptions().position(targetLocation).title("Flyware Agency")
 
         googleMap.clear()
         googleMap.addMarker(markerOptions)

@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        FirebaseApp.initializeApp(this)
         val singUp = findViewById<TextView>(R.id.singUp)
         val logIn = findViewById<TextView>(R.id.logIn)
         val singUpLayout = findViewById<LinearLayout>(R.id.singUpLayout)
