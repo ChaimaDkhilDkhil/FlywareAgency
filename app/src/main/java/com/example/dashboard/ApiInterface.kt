@@ -15,11 +15,18 @@ interface ApiInterface {
         suspend fun getHotelBookings(): Response<List<HotelBooking>>
 
 
+        @PUT("statusHotel/{id}")
+        suspend fun putStatusHotel(
+                @Path("id") id : String,
+                @Body status: HotelBooking
+        ):Response<HotelBooking>
+
         @PUT("hotelBookings/{id}")
         suspend fun putPost(
                 @Path("id") id : String,
                 @Body user: HotelBooking
         ):Response<HotelBooking>
+
         @DELETE("hotelBookings/{id}")
         suspend fun deletePost(
                 @Path("id") id : String

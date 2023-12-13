@@ -15,6 +15,11 @@ interface ApiInterfaceTransport {
     @GET("transportBookings/")
     suspend fun getTransportBookings(): Response<List<TransportBooking>>
 
+    @PUT("statusTransport/{id}")
+    suspend fun putStatusTransport(
+        @Path("id") id : String,
+        @Body status: TransportBooking
+    ):Response<TransportBooking>
 
     @PUT("transportBookings/{id}")
     suspend fun putPost(

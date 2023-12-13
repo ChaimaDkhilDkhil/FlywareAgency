@@ -13,5 +13,5 @@ data class TransportBooking(
     val nbPersonne: Int,
     val date: String,
     val luggage: Int,
-    val status:String?="en attente"
+    var status:String?="en attente"
 )

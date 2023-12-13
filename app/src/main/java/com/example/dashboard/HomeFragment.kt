@@ -37,7 +37,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the map only if it hasn't been initialized before
         if (!isMapInitialized) {
             recyclerViewList = view.findViewById(R.id.view)
             val mapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?

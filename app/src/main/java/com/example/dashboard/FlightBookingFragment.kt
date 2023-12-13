@@ -48,7 +48,9 @@ class FlightBookingFragment : Fragment() {
                                 userResponse.getString("_id"),
                                 userResponse.getString("username"),
                                 userResponse.getString("password"),
-                                userResponse.getString("token")
+                                userResponse.getString("token") ,
+                                userResponse.getString("role")
+
                             )
                             val flightId = book.getString("flight")
                             val flightUrl = "http://192.168.56.1:3000/flights/$flightId"

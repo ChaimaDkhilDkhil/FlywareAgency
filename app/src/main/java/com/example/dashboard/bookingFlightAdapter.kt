@@ -56,6 +56,7 @@ class bookingFlightAdapter(var mList: ArrayList<Booking>, var requestQueue: Requ
             intent.putExtra("nbChildren", currentItem.nbChildren)
             intent.putExtra("travelClass", currentItem.travelClass)
             holder.itemView.context.startActivity(intent)
+            notifyDataSetChanged()
         }
 
         holder.delete.setOnClickListener {

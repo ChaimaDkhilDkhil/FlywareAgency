@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signup: Button
     private lateinit var sharedPreference: SharedPreferenceLogin
     private lateinit var sharedPreferenceSignup: SharedPreferenceSignup
-    private lateinit var fcmToken: String
+    private var fcmToken: String = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
                 val a = ad.create()
                 a.show()
             } else {
-                val user = User(null, name, password,fcmToken)
+                val user = User(null, name, password,fcmToken,null)
 
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
@@ -114,17 +114,19 @@ class LoginActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
                             if (response.isSuccessful && response.body() != null) {
-                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                                response.body()!!._id?.let { it1 ->
-                                    sharedPreference.save(
-                                        "id",
-                                        it1
-                                    )
+                                response.body()!!.role?.let { it1 ->
+                                if (it1.equals("admin"))
+    startActivity(Intent(this@LoginActivity, AdminMainActivity::class.java))
+                                else{    startActivity(Intent(this@LoginActivity, MainActivity::class.java))}
                                 }
+
+                                response.body()!!._id?.let { it1 ->
+                                    sharedPreference.save("id", it1) }
                                 sharedPreference.save("Email", name)
                                 sharedPreference.save("Password", password)
                                 sharedPreference.save("token", fcmToken)
-
+                                response.body()!!.role?.let { it1 ->
+                                    sharedPreference.save("role", it1) }
                             } else {
                                 val ad: AlertDialog.Builder =
                                     AlertDialog.Builder(this@LoginActivity)
@@ -172,7 +174,7 @@ class LoginActivity : AppCompatActivity() {
             } else if (name.isNotEmpty() && password.isNotEmpty() && confirmedPassword.isNotEmpty()) {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
-                        val response = RetrofitInstance.api.signup(User(null, name, password,fcmToken))
+                        val response = RetrofitInstance.api.signup(User(null, name, password,fcmToken,null))
 
                         withContext(Dispatchers.Main) {
                             if (response.isSuccessful) {
