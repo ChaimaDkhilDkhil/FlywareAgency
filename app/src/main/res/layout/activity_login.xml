@@ -294,6 +294,7 @@
                     android:layout_height="35dp"/>
                 <ImageView
                     android:src="@drawable/ic_twitter"
+                    android:id="@+id/feedbackbtn"
                     android:layout_margin="10dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"/>
