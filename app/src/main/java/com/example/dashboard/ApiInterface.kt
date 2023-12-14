@@ -11,6 +11,10 @@ interface ApiInterface {
         suspend fun createBooking(
                 @Body hotelBooking: HotelBooking
         ):Response<HotelBooking>
+        @POST("send-email/")
+        suspend fun sendEmail(
+                @Body email: MailForm
+        ):Response<MailForm>
         @GET("hotelBookings/")
         suspend fun getHotelBookings(): Response<List<HotelBooking>>
 

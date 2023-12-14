@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Project44"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Todo"
+            android:exported="false" />
+        <activity
+            android:name=".Feedback"
+            android:exported="false" />
+        <activity
             android:name=".AdminMainActivity"
             android:exported="false" />
 

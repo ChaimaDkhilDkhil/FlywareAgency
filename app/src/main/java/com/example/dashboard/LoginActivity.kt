@@ -168,7 +168,6 @@ class LoginActivity : AppCompatActivity() {
                 val ad: AlertDialog.Builder = AlertDialog.Builder(this)
                 ad.setMessage("Le mot de passe et la confirmation du mot de passe doivent être identiques")
                 ad.setTitle("Erreur")
-                ad.setIcon(android.R.drawable.btn_dialog)
                 val a: AlertDialog = ad.create()
                 a.show()
             } else if (name.isNotEmpty() && password.isNotEmpty() && confirmedPassword.isNotEmpty()) {
@@ -190,7 +189,6 @@ class LoginActivity : AppCompatActivity() {
                                         AlertDialog.Builder(this@LoginActivity)
                                     ad.setMessage("Le nom d'utilisateur existe déjà. Veuillez en choisir un autre.")
                                     ad.setTitle("Erreur")
-                                    ad.setIcon(android.R.drawable.btn_dialog)
                                     val a: AlertDialog = ad.create()
                                     a.show()
                                 } else {
@@ -217,7 +215,6 @@ class LoginActivity : AppCompatActivity() {
                 val ad: AlertDialog.Builder = AlertDialog.Builder(this)
                 ad.setMessage("Les champs ne doivent pas être vides")
                 ad.setTitle("Erreur")
-                ad.setIcon(android.R.drawable.btn_dialog)
                 val a: AlertDialog = ad.create()
                 a.show()
             }

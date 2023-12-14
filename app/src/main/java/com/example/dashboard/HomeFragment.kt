@@ -27,6 +27,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     private var lastKnownLocation: LatLng? = null
     private var isMapInitialized = false
+    private lateinit var todo: Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,7 +38,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        todo=view.findViewById(R.id.contactsButton)
+        todo.setOnClickListener{
+            val intent = Intent(requireContext(), Todo::class.java)
+            requireContext().startActivity(intent)
+        }
         if (!isMapInitialized) {
             recyclerViewList = view.findViewById(R.id.view)
             val mapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?

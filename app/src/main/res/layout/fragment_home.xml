@@ -99,7 +99,7 @@
                             android:layout_height="46dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="8dp"
-                            app:srcCompat="@mipmap/contact_foreground" />
+                            app:srcCompat="@drawable/todo_icon" />
 
                         <Button
                             android:id="@+id/contactsButton"
@@ -107,7 +107,7 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:backgroundTint="#DFF8E6"
-                            android:text="contacts"
+                            android:text="To Do"
                             android:textColor="@color/black"
                             android:textSize="9dp"
                             tools:ignore="TextSizeCheck" />
